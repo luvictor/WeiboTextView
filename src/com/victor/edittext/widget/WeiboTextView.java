@@ -4,7 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.victor.edittext.R;
-import com.victor.edittext.R.styleable;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -17,7 +16,6 @@ import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 仿新浪微博TextView
@@ -36,6 +34,8 @@ public class WeiboTextView extends TextView {
 
 	private int mLinkHighlightColor;// 链接高亮的颜色，默认蓝色
 
+	private OnLinkClickListener mOnLinkClickListener;
+
 	public WeiboTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initView(context, attrs);
@@ -52,11 +52,14 @@ public class WeiboTextView extends TextView {
 
 		if (attrs != null) {
 			TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.WeiboTextView);
+
+			// 设置链接高亮颜色
 			int mLinkHighlightColor = typedArray.getColor(R.styleable.WeiboTextView_linkHighlightColor,
 					DEFAULT_LINK_HIGHLIGHT_COLOR);
 			if (mLinkHighlightColor != 0) {
 				setLinkHighlightColor(mLinkHighlightColor);
 			}
+
 			typedArray.recycle();
 		}
 	}
@@ -119,9 +122,10 @@ public class WeiboTextView extends TextView {
 				MyClickableSpan clickableSpan = new MyClickableSpan() {
 
 					@Override
-					public void onClick(View widget) {
-						// 这里需要做跳转用户的实现，先用一个Toast代替
-						Toast.makeText(getContext(), "点击了用户：" + at, Toast.LENGTH_LONG).show();
+					public void onClick(View v) {
+						if (mOnLinkClickListener != null) {
+							mOnLinkClickListener.onAtClick(at);
+						}
 					}
 				};
 				spannableString.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -134,14 +138,17 @@ public class WeiboTextView extends TextView {
 				MyClickableSpan clickableSpan = new MyClickableSpan() {
 
 					@Override
-					public void onClick(View widget) {
-						Toast.makeText(getContext(), "点击了话题：" + topic, Toast.LENGTH_LONG).show();
+					public void onClick(View v) {
+						if (mOnLinkClickListener != null) {
+							mOnLinkClickListener.onTopicClick(topic);
+						}
 					}
 				};
 				spannableString.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 
 			if (emoji != null) {
+
 				int start = matcher.start(3);
 				int end = start + emoji.length();
 				// int ResId = EmotionUtils.getImgByName(emoji);
@@ -167,7 +174,9 @@ public class WeiboTextView extends TextView {
 
 					@Override
 					public void onClick(View widget) {
-						Toast.makeText(getContext(), "点击了网址：" + url, Toast.LENGTH_LONG).show();
+						if (mOnLinkClickListener != null) {
+							mOnLinkClickListener.onUrlClick(url);
+						}
 					}
 				};
 				spannableString.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -175,6 +184,14 @@ public class WeiboTextView extends TextView {
 		}
 
 		return spannableString;
+	}
+
+	public OnLinkClickListener getOnLinkClickListener() {
+		return mOnLinkClickListener;
+	}
+
+	public void setOnLinkClickListener(OnLinkClickListener mOnLinkClickListener) {
+		this.mOnLinkClickListener = mOnLinkClickListener;
 	}
 
 	/**
@@ -197,5 +214,35 @@ public class WeiboTextView extends TextView {
 			ds.setUnderlineText(false);
 		}
 
+	}
+
+	/**
+	 * 链接点击的监听器
+	 * 
+	 * @author Victor
+	 * @email 468034043@qq.com
+	 * @time 2016年5月11日 下午5:15:23
+	 */
+	public static interface OnLinkClickListener {
+		/**
+		 * 点击了@的人， 如"@victor"
+		 * 
+		 * @param at
+		 */
+		void onAtClick(String at);
+
+		/**
+		 * 点击了话题，如"#中国#"
+		 * 
+		 * @param topic
+		 */
+		void onTopicClick(String topic);
+
+		/**
+		 * 点击了url，如"http://www.google.com"
+		 * 
+		 * @param url
+		 */
+		void onUrlClick(String url);
 	}
 }

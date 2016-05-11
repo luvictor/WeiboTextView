@@ -6,6 +6,8 @@ import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import com.victor.edittext.widget.WeiboTextView;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,13 +19,12 @@ import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
 	private EditText et_content;
-	private TextView tv_result;
+	private WeiboTextView tv_result;
 
 	private List<String> mAtList = new ArrayList<String>();// @的人的列表
 	private ArrayList<ForegroundColorSpan> mColorSpans = new ArrayList<ForegroundColorSpan>();
@@ -36,7 +37,7 @@ public class MainActivity extends Activity {
 		EventBus.getDefault().register(this);
 
 		et_content = (EditText) findViewById(R.id.et_content);
-		tv_result = (TextView) findViewById(R.id.tv_result);
+		tv_result = (WeiboTextView) findViewById(R.id.tv_result);
 
 		// 一,实现话题变色
 		et_content.addTextChangedListener(new TextWatcher() {
@@ -134,8 +135,29 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		String source = "@张三 超链接测试#正在发生#郑州搞笑毕业照走红网络 http://www.baidu.com";
+		String source = "@张三 超链接测试#正在发生#郑州搞笑#victor#毕业照走@victor 红网络 http://www.baidu.com";
 		tv_result.setText(source);
+		tv_result.setOnLinkClickListener(new WeiboTextView.OnLinkClickListener() {
+
+			@Override
+			public void onUrlClick(String url) {
+				showToast("点击了链接：" + url);
+			}
+
+			@Override
+			public void onTopicClick(String topic) {
+				showToast("点击了话题：" + topic);
+			}
+
+			@Override
+			public void onAtClick(String at) {
+				showToast("点击了@：" + at);
+			}
+		});
+	}
+
+	private void showToast(String text) {
+		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
 	}
 
 	@Subscribe
