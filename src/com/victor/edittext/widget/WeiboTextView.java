@@ -1,10 +1,13 @@
-package com.victor.edittext;
+package com.victor.edittext.widget;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.annotation.TargetApi;
+import com.victor.edittext.R;
+import com.victor.edittext.R.styleable;
+
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -24,38 +27,56 @@ import android.widget.Toast;
  * @time 2016年5月11日 下午4:20:57
  */
 public class WeiboTextView extends TextView {
+	private static final int DEFAULT_LINK_HIGHLIGHT_COLOR = Color.BLUE;// 默认链接高亮颜色
 	// 定义正则表达式
 	private static final String AT = "@[\u4e00-\u9fa5\\w]+";// @人
 	private static final String TOPIC = "#[\u4e00-\u9fa5\\w]+#";// ##话题
 	private static final String EMOJI = "\\[[\u4e00-\u9fa5\\w]+\\]";// 表情
 	private static final String URL = "http://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";// url
 
-	@TargetApi(21)
-	public WeiboTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-		super(context, attrs, defStyleAttr, defStyleRes);
-		initView(context);
-	}
-
-	public WeiboTextView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		initView(context);
-	}
+	private int mLinkHighlightColor;// 链接高亮的颜色，默认蓝色
 
 	public WeiboTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		initView(context);
+		initView(context, attrs);
 	}
 
 	public WeiboTextView(Context context) {
 		super(context);
-		initView(context);
+		initView(context, null);
 	}
 
-	private void initView(Context context) {
+	private void initView(Context context, AttributeSet attrs) {
 		// 要实现文字的点击效果，这里需要做特殊处理
 		setMovementMethod(LinkMovementMethod.getInstance());
+
+		if (attrs != null) {
+			TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.WeiboTextView);
+			int mLinkHighlightColor = typedArray.getColor(R.styleable.WeiboTextView_linkHighlightColor,
+					DEFAULT_LINK_HIGHLIGHT_COLOR);
+			if (mLinkHighlightColor != 0) {
+				setLinkHighlightColor(mLinkHighlightColor);
+			}
+			typedArray.recycle();
+		}
 	}
 
+	public void setLinkHighlightColor(int mLinkHighlightColor) {
+		this.mLinkHighlightColor = mLinkHighlightColor;
+	}
+
+	public int getLinkHightlightColor() {
+		return this.mLinkHighlightColor;
+	}
+
+	/**
+	 * 因为父类的setText(CharSequence text)是final的，只能重写该方法
+	 * 
+	 * 注：实际上setText(CharSequence text)内部也是调用了该方法
+	 * 
+	 * @param text
+	 * @param type
+	 */
 	@Override
 	public void setText(CharSequence text, BufferType type) {
 		// super.setText(text, type);
@@ -162,7 +183,7 @@ public class WeiboTextView extends TextView {
 	 * @author Rabbit_Lee
 	 *
 	 */
-	public static class MyClickableSpan extends ClickableSpan {
+	private class MyClickableSpan extends ClickableSpan {
 
 		@Override
 		public void onClick(View widget) {
@@ -172,7 +193,7 @@ public class WeiboTextView extends TextView {
 		@Override
 		public void updateDrawState(TextPaint ds) {
 			super.updateDrawState(ds);
-			ds.setColor(Color.BLUE);
+			ds.setColor(mLinkHighlightColor);
 			ds.setUnderlineText(false);
 		}
 
