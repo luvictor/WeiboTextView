@@ -135,7 +135,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		String source = "@张三 超链接测试#正在发生#郑州搞笑#victor#毕业照走@victor 红网络 http://www.baidu.com";
+		String source = "@张三 超链接测试#正在发生#幽默搞笑#victor#毕业照走@victor 红网络 http://www.baidu.com";
 		tv_result.setText(source);
 		tv_result.setOnLinkClickListener(new WeiboTextView.OnLinkClickListener() {
 

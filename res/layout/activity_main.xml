@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:onClick="gotoSelectAtPeople"
-        android:text="\\@" />
+        android:text="\@" />
 
     <com.victor.edittext.widget.WeiboTextView
         android:id="@+id/tv_result"
