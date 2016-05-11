@@ -59,7 +59,7 @@ public class WeiboTextView extends TextView {
 	@Override
 	public void setText(CharSequence text, BufferType type) {
 		// super.setText(text, type);
-		super.setText(getWeiboContent(getContext(), text, this), type);
+		super.setText(getWeiboContent(text), type);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class WeiboTextView extends TextView {
 	 * @param textView
 	 * @return
 	 */
-	public SpannableString getWeiboContent(final Context context, CharSequence source, TextView textView) {
+	public SpannableString getWeiboContent(CharSequence source) {
 		SpannableString spannableString = new SpannableString(source);
 
 		String REGEX = "(" + AT + ")|(" + TOPIC + ")|(" + EMOJI + ")|(" + URL + ")";
@@ -100,7 +100,7 @@ public class WeiboTextView extends TextView {
 					@Override
 					public void onClick(View widget) {
 						// 这里需要做跳转用户的实现，先用一个Toast代替
-						Toast.makeText(context, "点击了用户：" + at, Toast.LENGTH_LONG).show();
+						Toast.makeText(getContext(), "点击了用户：" + at, Toast.LENGTH_LONG).show();
 					}
 				};
 				spannableString.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -114,7 +114,7 @@ public class WeiboTextView extends TextView {
 
 					@Override
 					public void onClick(View widget) {
-						Toast.makeText(context, "点击了话题：" + topic, Toast.LENGTH_LONG).show();
+						Toast.makeText(getContext(), "点击了话题：" + topic, Toast.LENGTH_LONG).show();
 					}
 				};
 				spannableString.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -146,7 +146,7 @@ public class WeiboTextView extends TextView {
 
 					@Override
 					public void onClick(View widget) {
-						Toast.makeText(context, "点击了网址：" + url, Toast.LENGTH_LONG).show();
+						Toast.makeText(getContext(), "点击了网址：" + url, Toast.LENGTH_LONG).show();
 					}
 				};
 				spannableString.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
