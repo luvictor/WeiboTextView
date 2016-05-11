@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/shp_reg_edittext"
+        android:gravity="left|top"
+        android:hint="亲，请输入您的内容及要求"
+        android:maxLength="500"
+        android:maxLines="10"
+        android:padding="5dp"
+        android:singleLine="false"
+        android:textSize="16sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="gotoSelectAtPeople"
+        android:text="\\@" />
+
+    <com.victor.edittext.WeiboTextView
+        android:id="@+id/tv_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="left|top"
+        android:hint="亲，请输入您的内容及要求"
+        android:maxLength="500"
+        android:maxLines="10"
+        android:singleLine="false"
+        android:textSize="16sp" />
+
+</LinearLayout>
