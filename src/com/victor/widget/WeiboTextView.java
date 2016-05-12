@@ -1,9 +1,9 @@
-package com.victor.edittext.widget;
+package com.victor.widget;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.victor.edittext.R;
+import com.victor.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -31,6 +31,7 @@ public class WeiboTextView extends TextView {
 	private static final String TOPIC = "#[\u4e00-\u9fa5\\w]+#";// ##话题
 	private static final String EMOJI = "\\[[\u4e00-\u9fa5\\w]+\\]";// 表情
 	private static final String URL = "http://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";// url
+	private static final String REGEX = "(" + AT + ")|(" + TOPIC + ")|(" + EMOJI + ")|(" + URL + ")";
 
 	private int mLinkHighlightColor;// 链接高亮的颜色，默认蓝色
 
@@ -97,10 +98,9 @@ public class WeiboTextView extends TextView {
 	public SpannableString getWeiboContent(CharSequence source) {
 		SpannableString spannableString = new SpannableString(source);
 
-		String REGEX = "(" + AT + ")|(" + TOPIC + ")|(" + EMOJI + ")|(" + URL + ")";
 		// 设置正则
-		Pattern pattern = Pattern.compile(REGEX);
-		Matcher matcher = pattern.matcher(spannableString);
+		Pattern mPattern = Pattern.compile(REGEX);
+		Matcher matcher = mPattern.matcher(spannableString);
 
 		if (matcher.find()) {
 			// 重置正则位置
@@ -173,7 +173,7 @@ public class WeiboTextView extends TextView {
 				MyClickableSpan clickableSpan = new MyClickableSpan() {
 
 					@Override
-					public void onClick(View widget) {
+					public void onClick(View v) {
 						if (mOnLinkClickListener != null) {
 							mOnLinkClickListener.onUrlClick(url);
 						}
@@ -203,7 +203,7 @@ public class WeiboTextView extends TextView {
 	private class MyClickableSpan extends ClickableSpan {
 
 		@Override
-		public void onClick(View widget) {
+		public void onClick(View v) {
 
 		}
 

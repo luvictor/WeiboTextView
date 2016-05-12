@@ -5,7 +5,7 @@
     android:background="#f5f5f5"
     android:orientation="vertical" >
 
-    <EditText
+    <com.victor.widget.WeiboEditText
         android:id="@+id/et_content"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -17,16 +17,30 @@
         android:maxLines="10"
         android:padding="5dp"
         android:singleLine="false"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:linkHighlightColor="#ff6455" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:onClick="gotoSelectAtPeople"
-        android:text="\@" />
+        android:orientation="horizontal" >
 
-    <com.victor.edittext.widget.WeiboTextView
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:onClick="gotoSelectAtPeople"
+            android:text="\@" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:onClick="gotoSelectTopic"
+            android:text="\#" />
+    </LinearLayout>
+
+    <com.victor.widget.WeiboTextView
         android:id="@+id/tv_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
