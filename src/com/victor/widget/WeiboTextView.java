@@ -27,7 +27,7 @@ import android.widget.TextView;
 public class WeiboTextView extends TextView {
 	private static final int DEFAULT_LINK_HIGHLIGHT_COLOR = Color.BLUE;// 默认链接高亮颜色
 	// 定义正则表达式
-	private static final String AT = "@[\u4e00-\u9fa5\\w]+";// @人
+	private static final String AT = "@[\u4e00-\u9fa5\\w]+\\s";// @人（末尾含空格）
 	private static final String TOPIC = "#[\u4e00-\u9fa5\\w]+#";// ##话题
 	private static final String EMOJI = "\\[[\u4e00-\u9fa5\\w]+\\]";// 表情
 	private static final String URL = "http://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";// url

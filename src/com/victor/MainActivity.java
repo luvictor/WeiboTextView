@@ -12,6 +12,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,7 +39,7 @@ public class MainActivity extends Activity {
 		et_content = (EditText) findViewById(R.id.et_content);
 		tv_result = (WeiboTextView) findViewById(R.id.tv_result);
 
-		// 一,实现话题变色
+		// // 一,实现话题变色
 		// et_content.addTextChangedListener(new TextWatcher() {
 		// @Override
 		// public void beforeTextChanged(CharSequence s, int start, int count,
@@ -99,7 +102,7 @@ public class MainActivity extends Activity {
 //						lastPos = content.indexOf(at, lastPos);
 //						if (lastPos != -1) {
 //							if (selectionStart != 0 && selectionStart >= lastPos
-//									&& selectionStart <= (lastPos + at.length())) {
+//									&& selectionStart <= (lastPos + at.length())) {// 此循环的作用是设置要被删除的部分选中
 //								// 选中@的人
 //								et_content.setSelection(lastPos, lastPos + at.length());
 //								// 从集合中删除
@@ -163,7 +166,7 @@ public class MainActivity extends Activity {
 
 	@Subscribe
 	public void onGetAtOrTopic(String text) {
-		// mAtList.add(text);
+		mAtList.add(text);
 		et_content.append(text);
 		et_content.requestFocus();
 	}

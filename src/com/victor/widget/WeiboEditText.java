@@ -31,7 +31,7 @@ public class WeiboEditText extends EditText {
 	private static final int DEFAULT_LINK_HIGHLIGHT_COLOR = Color.BLUE;// 默认链接高亮颜色
 	private int mLinkHighlightColor = DEFAULT_LINK_HIGHLIGHT_COLOR;// 链接高亮的颜色，默认蓝色
 	// 定义正则表达式
-	private static final String AT = "@[\u4e00-\u9fa5\\w]+";// @人
+	private static final String AT = "@[\u4e00-\u9fa5\\w]+\\s";// @人（末尾含空格）
 	private static final String TOPIC = "#[\u4e00-\u9fa5\\w]+#";// ##话题
 	private static final String EMOJI = "\\[[\u4e00-\u9fa5\\w]+\\]";// 表情
 	private static final String URL = "http://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";// url
@@ -63,6 +63,11 @@ public class WeiboEditText extends EditText {
 		applyHighlightColor();
 
 		// 三、实现话题选中删除效果
+		/**
+		 * 原理：点击键盘上删除按钮的时候，要判断光标前是普通字符，还是特殊字符串(@,#),
+		 * 1、如果是普通字符，那么直接交由系统删除（return false;）
+		 * 2、若是特殊字符串(@,#)， 则先设置特殊字符串文本选中，消耗掉删除事件(return true), 再次点击的时候，执行删除操作
+		 */
 		this.setOnKeyListener(new View.OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
